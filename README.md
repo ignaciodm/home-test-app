@@ -10,19 +10,18 @@ Build a small web UI that simulates a file upload and status tracking flow. Use 
 tasks (e.g. 5–10 seconds) to allow testing of polling, cancellation, and error handling features.
 
 Requirements
-- [x]  Use React + TypeScript
-- 
-- Allow selecting and submitting a file (no actual upload needed)
-- Simulate an API call that returns a `task_id`
-- Poll a mocked `/status/{task_id}` endpoint every few seconds until the task completes
-- Show status and final success/failure result
-- Include a mobile-friendly layout
-- Show error and loading states appropriately
-- Reject files that aren’t PDFs or images under 2MB
-- Retry polling on network failure up to 3 times
-- Cancel polling if the component unmounts or the user navigates away
-- Display a visible list of all submitted tasks and their current statuses in the UI
-- Allow the user to manually cancel a task
+- [x] 1. Use React + TypeScript
+- [ ] 2. Allow selecting and submitting a file (no actual upload needed)
+- [ ] 3. Simulate an API call that returns a `task_id`
+- [ ] 4. Poll a mocked `/status/{task_id}` endpoint every few seconds until the task completes
+- [ ] 5. Show status and final success/failure result
+- [ ] 6. Include a mobile-friendly layout
+- [ ] 7. Show error and loading states appropriately
+- [ ] 8. Reject files that aren’t PDFs or images under 2MB
+- [ ] 9. Retry polling on network failure up to 3 times
+- [ ] 10. Cancel polling if the component unmounts or the user navigates away
+- [ ] 11. Display a visible list of all submitted tasks and their current statuses in the UI
+- [ ] 12. Allow the user to manually cancel a task
 
 Mocking
 You may use `msw`, `axios-mock-adapter`, `setTimeout`, or your own mock logic to simulate the API.
