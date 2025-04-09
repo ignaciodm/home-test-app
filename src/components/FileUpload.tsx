@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { uploadFile } from '../api/tasks';
 import { Task, useTaskContext } from '../context/TaskContext';
 import { useTaskPolling } from '../hooks/useTaskPolling';
+import { validateFile } from '../util/fileUtils.ts';
 
 export default function FileUpload() {
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -39,26 +40,20 @@ export default function FileUpload() {
 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
+        const file = e.target.files?.[0]
+        if (!file) return
 
-        const isValidType = /pdf|image/.test(file.type);
-        const isValidSize = file.size < 2 * 1024 * 1024;
+        // Call validateFile function to check file type and size
+        const error = validateFile(file)
 
-        if (!isValidType) {
-            setError('Only PDFs and images allowed');
-            return;
+        if (error) {
+            setError(error)  // Set the error message if the validation fails
+            return
         }
 
-        if (!isValidSize) {
-            setError('File must be under 2MB');
-            return;
-        }
-
-        setError('');
-        setSelectedFile(file);
-    };
-
+        setError('')  // Clear any previous error
+        setSelectedFile(file)  // Set the selected file if it passes validation
+    }
     const handleSubmit = () => {
         if (!selectedFile) return;
         mutation.mutate(selectedFile);
