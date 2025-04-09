@@ -1,54 +1,53 @@
-# React + TypeScript + Vite
+# HomeTestApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+#### Instructions
+Please read the instructions below carefully and submit your solution by the deadline.
 
-Currently, two official plugins are available:
+This assignment is designed to be short and practical. You may use AI tools to help you, but we are especially interested in your understanding of the problem and your approach to solving it.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The Task
+Build a small web UI that simulates a file upload and status tracking flow. Use long-running mocked
+tasks (e.g. 5–10 seconds) to allow testing of polling, cancellation, and error handling features.
 
-## Expanding the ESLint configuration
+Requirements
+- [x]  Use React + TypeScript
+- 
+- Allow selecting and submitting a file (no actual upload needed)
+- Simulate an API call that returns a `task_id`
+- Poll a mocked `/status/{task_id}` endpoint every few seconds until the task completes
+- Show status and final success/failure result
+- Include a mobile-friendly layout
+- Show error and loading states appropriately
+- Reject files that aren’t PDFs or images under 2MB
+- Retry polling on network failure up to 3 times
+- Cancel polling if the component unmounts or the user navigates away
+- Display a visible list of all submitted tasks and their current statuses in the UI
+- Allow the user to manually cancel a task
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Mocking
+You may use `msw`, `axios-mock-adapter`, `setTimeout`, or your own mock logic to simulate the API.
+Simulated tasks should run for several seconds to test polling and cancellation.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Submission
+- Push your code to a public GitHub repo
+- Use commits as you normally would during development
+- Include a brief write-up (e.g. README.md or PDF) answering the reflection questions below
+- Submit the completion form at https://tally.so/r/nGbMyZ: please make sure you do not miss this step,
+  otherwise we won't be able to assess your test.
+  Reflection Questions (include with submission in the repo as a
+  README.md or PDF)
+- What did you choose to mock the API and why?
+- If you used an AI tool, what parts did it help with?
+- What tradeoffs or shortcuts did you take?
+- What would you improve or add with more time?
+- What was the trickiest part and how did you debug it?
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Optional Bonus
+- Include a simple test (unit or integration)
+- Use React Query or a custom hook for polling
+- Handle polling cancellation and retries
+- If you finish early, feel free to add one small feature you think would make the UI more useful or
+  polished. Mention it in your write-up.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Time Expectation
+We expect this to take 2–3 hours max. Don’t overthink—focus on clarity and completeness.
