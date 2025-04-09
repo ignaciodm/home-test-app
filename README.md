@@ -56,33 +56,35 @@ Submission
   I used msw because it allows for easy mocking of API calls and provides a clean way to simulate different responses.
   I have used msw before, and I did not know the other libraries. `msw` was a familiar library to use, and in the past
   it proved to be a good choice for mocking APIs. I did not have much time to evaluate others.
--
-- If you used an AI tool, what parts did it help with?
-  I used AI (chatgpt) for almost everything today. I have not written a line of since 2019, given I have been
+
+- [x] If you used an AI tool, what parts did it help with?
+  I used AI (chatgpt) for almost everything today. I have not written a line of React since 2019, given I have been
   using Vue 2 and Vue 3 lately. The concepts are similar, but the syntax is different.
   I know there might be things that are not properly organised. I did not use redux, because I think it is overkill for
-  this
-  small job, but I usually prefer to use global state management libraries like redux or pinia (vue equivalent).
-
+  this small job, but I usually prefer to use global state management libraries like redux or pinia (vue equivalent).
+  If I get back to working with React, I would like to understand how to structure the code better, so it is testable.
 
 - What tradeoffs or shortcuts did you take?
-  Believe it or not, I spent 40 minutes dealing with tailwind. I know is a popular library and also I have not used it
-  before.
+  Believe it or not, I spent 40 minutes dealing with tailwind. I know it is a popular library but I have not used it
+  before, as I used `vuetify` for Vue 2 and `quasar` for Vue 3 (vue components libraries)
   I thought it will take me 5 minutes to put it in place, but I spent 40 minutes trying to make it work.
   This was my worst mistake today, also considering that the UI look & feel was the less important part of the test.
   I wanted to include tailwind to demonstrate that I could also abstract between pure components (UI components) and
   parent/container components, which read to the state, etc, but I failed to do so.
 
 - What would you improve or add with more time?
-  I think I was mostly prototyping. Given the non familiarity with the sintaxis, I grab lots of the AI code as it is,
-  and tweaked.
-  It is usually not a good practice, but within a few days I can pick up react and now what are good/bad practices, and
-  ask the right things/questions
+  I think I was mostly prototyping. Given the non familiarity with the syntax and the best practices in React
+  I grab lots of the AI code as it is, and tweaked. It is usually not a good practice,  
+  but within a few days I can pick up react and now what are good/bad practices, and
+  ask then the right things/questions to the AI tool.
 
 - What was the trickiest part and how did you debug it?
-  I did not have much time to stuck on much of the functionality. 
-  I know there is a bug that if you cancel, it is still putting the task in pending.
-  Again, being my first 3 hours with React in 7 years, I did not even had the React dev tools installed. 
+  I did not have much time to get stuck on the proper functionality. The first 1.5 hours were about setting the project,
+  libs and the memorable tailwind :).
+
+  In the functionality, I know there is a bug that if you 'cancel' a task, it is still putting the task in 'pending' state.
+  
+  Also, being my first 3 hours with React in 7 years, I did not even had even the React dev tools installed.
   On my last commit I was starting to refactor some functions into pure functions, to start writing unit tests.
 
 Optional Bonus
