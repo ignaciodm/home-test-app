@@ -1,53 +1,54 @@
-import { useRef, useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
+import { useRef, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { uploadFile } from '../api/tasks';
+import { useTaskContext } from '../context/TaskContext';
 
 export default function FileUpload() {
-    const fileInputRef = useRef<HTMLInputElement>(null)
-    const [error, setError] = useState('')
-    const [selectedFile, setSelectedFile] = useState<File | null>(null)
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [error, setError] = useState('');
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+    const {addTask} = useTaskContext();
 
     const mutation = useMutation({
-        mutationFn: async (file: File) => {
-            const formData = new FormData()
-            formData.append('file', file)
-            const res = await axios.post('/upload', formData)
-            return res.data
-        },
+        mutationFn: uploadFile,
         onSuccess: (data) => {
-            console.log('Task ID:', data.taskId)
-            // TODO: add to task context or start polling
+            const task = {
+                id: data.taskId,
+                name: selectedFile?.name || 'unknown',
+                status: 'pending',
+            };
+            addTask(task);
+            // optionally start polling here
         },
-        onError: () => {
-            setError('Failed to submit file.')
-        },
-    })
+        onError: () => setError('Failed to submit file.'),
+    });
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
+        const file = e.target.files?.[0];
+        if (!file) return;
 
-        const isValidType = /pdf|image/.test(file.type)
-        const isValidSize = file.size < 2 * 1024 * 1024
+        const isValidType = /pdf|image/.test(file.type);
+        const isValidSize = file.size < 2 * 1024 * 1024;
 
         if (!isValidType) {
-            setError('Only PDFs and images allowed')
-            return
+            setError('Only PDFs and images allowed');
+            return;
         }
 
         if (!isValidSize) {
-            setError('File must be under 2MB')
-            return
+            setError('File must be under 2MB');
+            return;
         }
 
-        setError('')
-        setSelectedFile(file)
-    }
+        setError('');
+        setSelectedFile(file);
+    };
 
     const handleSubmit = () => {
-        if (!selectedFile) return
-        mutation.mutate(selectedFile)
-    }
+        if (!selectedFile) return;
+        mutation.mutate(selectedFile);
+    };
 
     return (
         <div className="space-y-2 border p-4 rounded-md bg-white shadow">
@@ -56,8 +57,9 @@ export default function FileUpload() {
                 type="file"
                 accept="application/pdf,image/*"
                 onChange={handleFileChange}
-                className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+                className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded file:border file:border-gray-300 file:bg-blue-500 file:text-white hover:file:bg-blue-600"
             />
+
 
             {error && <p className="text-red-600 text-sm">{error}</p>}
             {selectedFile && <p className="text-sm text-gray-700">Selected: {selectedFile.name}</p>}
@@ -70,5 +72,5 @@ export default function FileUpload() {
                 {mutation.isPending ? 'Submitting...' : 'Submit'}
             </button>
         </div>
-    )
+    );
 }
