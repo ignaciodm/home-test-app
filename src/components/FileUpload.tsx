@@ -1,28 +1,42 @@
 import { useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { uploadFile } from '../api/tasks';
-import { useTaskContext } from '../context/TaskContext';
+import { Task, useTaskContext } from '../context/TaskContext';
+import { useTaskPolling } from '../hooks/useTaskPolling';
 
 export default function FileUpload() {
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [error, setError] = useState('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [error, setError] = useState('');
 
-    const {addTask} = useTaskContext();
+    const {addTask, tasks, startPolling, stopPolling} = useTaskContext();
+    const [taskId, setTaskId] = useState<string | null>(null);
 
     const mutation = useMutation({
         mutationFn: uploadFile,
         onSuccess: (data) => {
-            const task = {
+            const task: Task = {
                 id: data.taskId,
-                name: selectedFile?.name || 'unknown',
+                name: selectedFile?.name || 'Unknown',
                 status: 'pending',
             };
-            addTask(task);
-            // optionally start polling here
+
+            addTask(task);  // Add the task to context
+            setTaskId(data.taskId);  // Set taskId to trigger global polling
+
+            startPolling();  // Start global polling for all tasks
+
+            setSelectedFile(null);  // Clear file input
         },
-        onError: () => setError('Failed to submit file.'),
+        onError: () => {
+            setError('Failed to submit file.');
+            setSelectedFile(null);
+        },
     });
+
+    // Call useTaskPolling with taskId and enabled status (polling starts after taskId is set)
+    useTaskPolling(taskId!, taskId !== null);
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -57,10 +71,8 @@ export default function FileUpload() {
                 type="file"
                 accept="application/pdf,image/*"
                 onChange={handleFileChange}
-                className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded file:border file:border-gray-300 file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+                className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-500 file:text-white hover:file:bg-blue-600"
             />
-
-
             {error && <p className="text-red-600 text-sm">{error}</p>}
             {selectedFile && <p className="text-sm text-gray-700">Selected: {selectedFile.name}</p>}
 
